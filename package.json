@@ -1,0 +1,16 @@
+{
+  "name": "jstube",
+  "version": "1.0.0",
+  "description": "Watch Video",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JHKIMS/JsTube.git"
+  },
+  "author": "Me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JHKIMS/JsTube/issues"
+  },
+  "homepage": "https://github.com/JHKIMS/JsTube#readme"
+}
