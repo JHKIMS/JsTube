@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Watch Video",
   "main": "index.js",
+  "scripts": {
+    "win": "node index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JHKIMS/JsTube.git"
@@ -12,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/JHKIMS/JsTube/issues"
   },
-  "homepage": "https://github.com/JHKIMS/JsTube#readme"
+  "homepage": "https://github.com/JHKIMS/JsTube#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
