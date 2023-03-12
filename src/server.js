@@ -8,8 +8,9 @@ const PORT = 4000;
 
 const app = express();
 const morganMiddleware = morgan("dev");
-app.use(morganMiddleware);
 
+app.set("View Engine", "pug"); // 우리가 pug을 쓴다는 것을 express에게 알려준다.
+app.use(morganMiddleware);
 app.use("/",globalRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
