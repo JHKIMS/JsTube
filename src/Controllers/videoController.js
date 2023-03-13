@@ -20,9 +20,9 @@ export const postEdit = (req, res) => {
 export const getUpload = (req, res) => {
   return res.render("upload", { pageTitle: "Upload Video" });
 };
-export const postUpload = (req, res) => {
+export const postUpload = async(req, res) => {
   const {title, description, hashtags } = req.body;
-  const video = new Video({
+  await Video.create({
     title, 
     description,
     createdAt: Date.now(),
@@ -32,7 +32,7 @@ export const postUpload = (req, res) => {
       rating: 0,
     },
   })
-  console.log(video);
+  // save는 promise를 리턴하고 이걸 await하면 document가 return 된다.(video.save는 생성된 video을 return)
   return res.redirect("/");
 };
 
