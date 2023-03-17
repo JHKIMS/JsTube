@@ -18,8 +18,8 @@ app.use(express.urlencoded({ extended: true })); // express가 form의 value을 
 app.use(
   session({
     secret: "Hello",
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     store: MongoStore.create({
         mongoUrl: "mongodb://127.0.0.1:27017/tube"
     }) // 세션이 DB에 저장되어 있기 때문에 서버를 껏다켜도 로그인이 유지된다.
