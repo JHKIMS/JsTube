@@ -17,11 +17,14 @@ app.use(express.urlencoded({ extended: true })); // express가 form의 value을 
 
 app.use(
   session({
-    secret: "Hello",
+    secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie:{
+        maxAge:5000, // 5초후에 자동으로 로그아웃 된다.
+    },
     store: MongoStore.create({
-        mongoUrl: "mongodb://127.0.0.1:27017/tube"
+        mongoUrl: process.env.DB_URL
     }) // 세션이 DB에 저장되어 있기 때문에 서버를 껏다켜도 로그인이 유지된다.
   })
 );
