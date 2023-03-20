@@ -4,7 +4,6 @@ import { editUser, deleteUser, see, logout, startGithubLogin, finishGithubLogin 
 const userRouter = express.Router();
 
 userRouter.get("/edit", editUser);
-userRouter.get("/delete", deleteUser);
 userRouter.get("/github/start", startGithubLogin);
 userRouter.get("/github/finish", finishGithubLogin);
 userRouter.get(":id", see);

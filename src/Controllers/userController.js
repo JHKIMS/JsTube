@@ -43,7 +43,7 @@ export const getLogin = (req, res) => {
 export const postLogin = async (req, res) => {
   const { username, password } = req.body;
   const pageTitle = "Login";
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username, socialOnly: false });
   if (!user) {
     return res.status(400).render("login", {
       pageTitle,
@@ -62,6 +62,9 @@ export const postLogin = async (req, res) => {
   return res.redirect("/");
 };
 
+/**
+ * @function startGithubLogin
+ */
 export const startGithubLogin = (req, res) => {
   const baseUrl = `https://github.com/login/oauth/authorize`;
   const config = {
@@ -74,6 +77,10 @@ export const startGithubLogin = (req, res) => {
   return res.redirect(finalUrl);
 };
 
+
+/**
+ * @function finishGithubLogin
+ */
 export const finishGithubLogin = async (req, res) => {
   const baseUrl = "https://github.com/login/oauth/access_token";
   const config = {
@@ -113,29 +120,25 @@ export const finishGithubLogin = async (req, res) => {
     const emailObj = emailData.find(
       (email) => email.primary === true && email.verified === true
     );
-    if(!emailObj){
+    if (!emailObj) {
       return res.redirect("/login");
     }
-    const existingUser = await User.findOne({email: emailObj.email});
-    if(existingUser){
-      //로그인 시켜준다.
-      req.session.loggedIn = true;
-      req.session.user = existingUser;
-      return res.redirect("/");
-    } else {
+    let user = await User.findOne({ email: emailObj.email });
+    if (!user) {
       // 새로운 계정을 생성해주자.
-      const user = await User.create({
+     user = await User.create({
+        avatarUrl: userData.avatar_url,
         name: userData.name,
         username: userData.login,
         email: emailObj.email,
-        password:"",
+        password: "",
         socialOnly: true,
         location: userData.location,
-      })
-      req.session.loggedIn = true;
-      req.session.user = user;
-      return res.redirect("/");
+      });
     }
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
     console.log("----EmailData----");
     console.log(emailData);
   } else {
@@ -143,9 +146,11 @@ export const finishGithubLogin = async (req, res) => {
   }
 };
 
-export const logout = (req, res) => res.send("Logout");
+export const logout = (req, res) => {
+  req.session.destroy();
+  return res.redirect("/");
+};
 
 export const editUser = (req, res) => res.send("Edit User");
-export const deleteUser = (req, res) => res.send("Delete User");
 
 export const see = (req, res) => res.send("See User");
