@@ -151,6 +151,11 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 
-export const editUser = (req, res) => res.send("Edit User");
+export const getEditUser = (req, res) =>{
+  return res.render("edit-profile", {pageTitle: "Edit Profile", user: req.session.user});
+};
+export const postEditUser = (req, res) => {
+  return res.render("edit-profile");
+}
 
 export const see = (req, res) => res.send("See User");
