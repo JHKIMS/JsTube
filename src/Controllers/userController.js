@@ -1,6 +1,7 @@
 import User from "../models/UserDb";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import session from "express-session";
 
 export const getJoin = (req, res) =>
   res.render("join", { pageTitle: "Join Account" });
@@ -159,12 +160,30 @@ export const getEditUser = (req, res) => {
 export const postEditUser = async (req, res) => {
   const {
     session: {
-      user: { _id },
+      user: { _id, email: sessionMail, username: sessionUsername },
     },
     body: { name, email, username, location },
   } = req;
   // const i = req.session.user._id
   // const { name, email, username, location } = req.body;
+  let changeCheck = [];
+  if (sessionMail !== email) {
+    changeCheck.push({ email });
+  }
+  if (sessionUsername !== username) {
+    changeCheck.push({ username });
+  }
+  console.log(changeCheck);
+  if (changeCheck.length > 0) {
+    const findUser = await User.findOne({ $or: changeCheck });
+    if (findUser && findUser._id.toString() !== _id) {
+      return res.status(400).render("edit-profile", {
+        pageTitle: "Fail Edit Profile",
+        errorMessage: "You can't change this name/email",
+      });
+    }
+  }
+
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
@@ -194,7 +213,7 @@ export const postChangePassword = async (req, res) => {
   } = req;
   const user = await User.findById(_id);
   const ok = await bcrypt.compare(oldPassword, user.password);
-  if(!ok){
+  if (!ok) {
     return res.status(400).render("users/change-password", {
       pageTitle: "Change Password",
       errorMessage: "The current password incorrect",
