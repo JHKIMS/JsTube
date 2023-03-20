@@ -4,8 +4,9 @@ include mixins/video
 block content 
     nav 
         ul 
-            li 
-                a(href="/videos/upload") Upload Video
+            if loggedIn
+                li 
+                    a(href="/videos/upload") Upload Video
     h2 Welcome here you will see the trending videos
 
     each movie in videos 

@@ -77,7 +77,6 @@ export const startGithubLogin = (req, res) => {
   return res.redirect(finalUrl);
 };
 
-
 /**
  * @function finishGithubLogin
  */
@@ -126,7 +125,7 @@ export const finishGithubLogin = async (req, res) => {
     let user = await User.findOne({ email: emailObj.email });
     if (!user) {
       // 새로운 계정을 생성해주자.
-     user = await User.create({
+      user = await User.create({
         avatarUrl: userData.avatar_url,
         name: userData.name,
         username: userData.login,
@@ -151,11 +150,25 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 
-export const getEditUser = (req, res) =>{
-  return res.render("edit-profile", {pageTitle: "Edit Profile", user: req.session.user});
+export const getEditUser = (req, res) => {
+  return res.render("edit-profile", {
+    pageTitle: "Edit Profile",
+    user: req.session.user,
+  });
 };
-export const postEditUser = (req, res) => {
-  return res.render("edit-profile");
-}
+export const postEditUser = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username, location },
+  } = req;
+  // const i = req.session.user._id
+  // const { name, email, username, location } = req.body;
+  await User.findByIdAndUpdate(_id, {
+    name, email, username, location
+  });
+  return res.render("edit-profile");  
+};
 
 export const see = (req, res) => res.send("See User");
