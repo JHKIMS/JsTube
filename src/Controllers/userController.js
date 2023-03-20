@@ -160,12 +160,18 @@ export const getEditUser = (req, res) => {
 export const postEditUser = async (req, res) => {
   const {
     session: {
-      user: { _id, email: sessionMail, username: sessionUsername },
+      user: { _id, avatarUrl, email: sessionMail, username: sessionUsername },
     },
     body: { name, email, username, location },
+    file,
   } = req;
+  // console.log(file);
   // const i = req.session.user._id
   // const { name, email, username, location } = req.body;
+
+  /**
+   * @Role username, email 중복체크 하는 부분
+   */
   let changeCheck = [];
   if (sessionMail !== email) {
     changeCheck.push({ email });
@@ -173,7 +179,6 @@ export const postEditUser = async (req, res) => {
   if (sessionUsername !== username) {
     changeCheck.push({ username });
   }
-  console.log(changeCheck);
   if (changeCheck.length > 0) {
     const findUser = await User.findOne({ $or: changeCheck });
     if (findUser && findUser._id.toString() !== _id) {
@@ -187,6 +192,7 @@ export const postEditUser = async (req, res) => {
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
+      avatarUrl: file ? file.path : avatarUrl , // 유저가 따로 파일을 변경하지 않으면 기존의 것으로 하겟다.
       name,
       email,
       username,
@@ -197,6 +203,7 @@ export const postEditUser = async (req, res) => {
   req.session.user = updatedUser;
   return res.redirect("/users/edit");
 };
+
 
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {

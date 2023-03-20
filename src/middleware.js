@@ -1,3 +1,5 @@
+import multer from "multer";
+
 export const localMiddleware = (req, res, next) => {
     res.locals.loggedIn = Boolean(req.session.loggedIn);
     res.locals.siteName = "Tube";
@@ -23,9 +25,7 @@ export const publicOnlyMiddleware = (req, res, next) =>{
     }
 }
 
-export const uploadFiles = multer({
-    dest: "uploads/"
-})
+export const uploadFiles = multer({dest: "uploads/"})
 
 /**
  * @function : Github로 로그인하지 않은 사람들을 위한 Middleware
