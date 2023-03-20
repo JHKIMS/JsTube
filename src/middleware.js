@@ -23,6 +23,10 @@ export const publicOnlyMiddleware = (req, res, next) =>{
     }
 }
 
+export const uploadFiles = multer({
+    dest: "uploads/"
+})
+
 /**
  * @function : Github로 로그인하지 않은 사람들을 위한 Middleware
  */
