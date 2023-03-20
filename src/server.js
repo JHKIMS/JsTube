@@ -10,6 +10,7 @@ import { localMiddleware } from "./middleware";
 const app = express();
 const morganMiddleware = morgan("dev");
 
+
 app.set("view engine", "pug"); // 우리가 pug을 쓴다는 것을 express에게 알려준다.
 app.set("views", process.cwd() + "/src/views");
 app.use(morganMiddleware);
@@ -41,6 +42,7 @@ app.get("/add-one", (req, res, next) => {
   return res.send(`${req.session.id}`);
 });
 app.use(localMiddleware);
+app.use("/uploads", express.static("uploads"));
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
