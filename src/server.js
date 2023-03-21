@@ -43,6 +43,7 @@ app.get("/add-one", (req, res, next) => {
 });
 app.use(localMiddleware);
 app.use("/uploads", express.static("uploads"));
+app.use("/assets", express.static("assets"));
 app.use("/", rootRouter);
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
