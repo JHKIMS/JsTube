@@ -1,4 +1,5 @@
 import User from "../models/UserDb";
+import Video from "../models/VideoDb";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 import session from "express-session";
@@ -192,7 +193,7 @@ export const postEditUser = async (req, res) => {
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? file.path : avatarUrl , // 유저가 따로 파일을 변경하지 않으면 기존의 것으로 하겟다.
+      avatarUrl: file ? file.path : avatarUrl, // 유저가 따로 파일을 변경하지 않으면 기존의 것으로 하겟다.
       name,
       email,
       username,
@@ -203,7 +204,6 @@ export const postEditUser = async (req, res) => {
   req.session.user = updatedUser;
   return res.redirect("/users/edit");
 };
-
 
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
@@ -238,10 +238,15 @@ export const postChangePassword = async (req, res) => {
 };
 
 export const see = async (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const user = await User.findById(id);
-  if(!user){
-    return res.status(404).render("404", {pageTitle: "User not found"});
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User not found" });
   }
-  return res.render("users/profile", {pageTitle: `${user.name}'s Profile`, user});
-}
+  const videos = await Video.find({ owner: user._id });
+  return res.render("users/profile", {
+    pageTitle: `${user.name}'s Profile`,
+    user,
+    videos,
+  });
+};
