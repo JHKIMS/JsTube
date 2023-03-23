@@ -2,12 +2,6 @@ extends base.pug
 include mixins/video
 
 block content 
-    nav 
-        ul 
-            if loggedIn
-                li 
-                    a(href="/videos/upload") Upload Video
-
     div.video-grid
         each movie in videos 
             +video(movie)
