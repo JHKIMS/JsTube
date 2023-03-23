@@ -7,9 +7,9 @@ block content
             if loggedIn
                 li 
                     a(href="/videos/upload") Upload Video
-    h2 Welcome here you will see the trending videos
 
-    each movie in videos 
-        +video(movie)
-    else 
-        span.empty__message No Videos Found
+    div.video-grid
+        each movie in videos 
+            +video(movie)
+        else 
+            span.empty__message No Videos Found
