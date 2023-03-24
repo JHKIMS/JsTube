@@ -15,6 +15,7 @@ let volumeValue = 0.5;
 video.volume = volumeValue;
 
 let controlsTimeout = null;
+let controlsMovementTimeout = null;
 
 const handlePlayClick = (event) => {
   if (video.paused) {
@@ -85,17 +86,22 @@ const escChangeScreenBtn = document.addEventListener("keydown", (event) => {
     }
   });
 
+const hideControls = () => videoControls.classList.remove("showing");
+
 const handleMouseMove = () => {
     if(controlsTimeout){
         clearTimeout(controlsTimeout);
         controlsTimeout = null;
     }
+    if(controlsMovementTimeout){
+        clearTimeout(controlsMovementTimeout);
+        controlsMovementTimeout=null;
+    }
     videoControls.classList.add("showing");
+    controlsMovementTimeout = setTimeout(hideControls,2000)
 }
 const handleMouseLeave =() =>{
-    controlsTimeout = setTimeout(()=>{
-        videoControls.classList.remove("showing");
-    },2000)
+    controlsTimeout = setTimeout(hideControls,2000)
 }
 
 playBtn.addEventListener("click", handlePlayClick);
