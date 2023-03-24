@@ -7,6 +7,8 @@ const volumeRange = document.getElementById("volume");
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const timeline = document.getElementById("timeline");
+const fullScreenBtn = document.getElementById("fullScreen");
+const videoContainer = document.getElementById("videoContainer");
 
 let volumeValue = 0.5;
 video.volume = volumeValue;
@@ -17,44 +19,61 @@ const handlePlayClick = (event) => {
   } else {
     video.pause();
   }
-  playBtn.innerText = video.paused ? "Play":"Pause";
+  playBtn.innerText = video.paused ? "Play" : "Pause";
 };
 
 const handleMute = (event) => {
-    if(video.muted){
-        video.muted=false;
-    }else{
-        video.muted=true;
-    }
-    muteBtn.innerText = video.muted ? "UnMute" : "Mute";
-    volumeRange.value = video.muted ? 0 : volumeValue;
+  if (video.muted) {
+    video.muted = false;
+  } else {
+    video.muted = true;
+  }
+  muteBtn.innerText = video.muted ? "UnMute" : "Mute";
+  volumeRange.value = video.muted ? 0 : volumeValue;
 };
 
-const handleVolumeChange=(event) =>{
-    const {target:{value}} = event;
-    if(video.muted){
-        video.muted = false;
-        muteBtn.innerText="Mute";
-    }
-    volumeValue = value;
-    video.volume = value;
-}
+const handleVolumeChange = (event) => {
+  const {
+    target: { value },
+  } = event;
+  if (video.muted) {
+    video.muted = false;
+    muteBtn.innerText = "Mute";
+  }
+  volumeValue = value;
+  video.volume = value;
+};
 
-const formatTime = (seconds) => new Date(seconds * 1000).toISOString().slice(11, 19);
+const formatTime = (seconds) =>
+  new Date(seconds * 1000).toISOString().slice(11, 19);
 
-const handleLoadMetadata = () =>{
-    totalTime.innerText = formatTime(Math.floor(video.duration));
-    timeline.max = Math.floor(video.duration);
-}
-const handleTimeUpdate = () =>{
-    currentTime.innerText = formatTime(Math.floor(video.currentTime));
-    timeline.value=Math.floor(video.currentTime);
-}
+const handleLoadMetadata = () => {
+  totalTime.innerText = formatTime(Math.floor(video.duration));
+  timeline.max = Math.floor(video.duration);
+};
+const handleTimeUpdate = () => {
+  currentTime.innerText = formatTime(Math.floor(video.currentTime));
+  timeline.value = Math.floor(video.currentTime);
+};
 
-const handleTimeLineChange = (event) =>{
-    const {target: {value}} = event;
-    video.currentTime = value;
-}
+const handleTimeLineChange = (event) => {
+  const {
+    target: { value },
+  } = event;
+  video.currentTime = value;
+};
+
+const handleFullScreen = () => {
+  const fullscreen = document.fullscreenElement;
+  if (fullscreen) {
+    document.exitFullscreen();
+    fullScreenBtn.innerText = "Enter Full Screen";
+  } else {
+    videoContainer.requestFullscreen();
+    fullScreenBtn.innerText = "Exit Full Screen";
+  }
+  escChangeScreenBtn();
+};
 
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
@@ -66,3 +85,12 @@ video.addEventListener("timeupdate", handleTimeUpdate);
 
 timeline.addEventListener("input", handleTimeLineChange);
 
+fullScreenBtn.addEventListener("click", handleFullScreen);
+
+// ESC 키를 눌렀을 때 Enter Full Screen으로 변경
+const escChangeScreenBtn = document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    document.exitFullscreen();
+    fullScreenBtn.innerText = "Enter Full Screen";
+  }
+});
