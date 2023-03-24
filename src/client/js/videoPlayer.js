@@ -3,8 +3,9 @@ import videoModel from "../../models/VideoDb";
 const video = document.querySelector("video");
 const playBtn = document.getElementById("play");
 const muteBtn = document.getElementById("mute");
-const time = document.getElementById("time");
 const volumeRange = document.getElementById("volume");
+const currentTime = document.getElementById("currentTime");
+const totalTime = document.getElementById("totalTime");
 
 let volumeValue = 0.5;
 video.volume = volumeValue;
@@ -38,8 +39,18 @@ const handleVolumeChange=(event) =>{
     video.volume = value;
 }
 
+const handleLoadMetadata = () =>{
+    totalTime.innerText = Math.floor(video.duration);
+}
+const handleTimeUpdate = () =>{
+    currentTime.innerText = Math.floor(video.currentTime);
+}
+
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
 
 volumeRange.addEventListener("input", handleVolumeChange);
+
+video.addEventListener("loadedmetadata", handleLoadMetadata);
+video.addEventListener("timeupdate", handleTimeUpdate);
 
