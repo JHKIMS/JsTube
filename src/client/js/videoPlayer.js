@@ -9,9 +9,12 @@ const totalTime = document.getElementById("totalTime");
 const timeline = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
 const videoContainer = document.getElementById("videoContainer");
+const videoControls = document.getElementById("videoControls");
 
 let volumeValue = 0.5;
 video.volume = volumeValue;
+
+let controlsTimeout = null;
 
 const handlePlayClick = (event) => {
   if (video.paused) {
@@ -74,6 +77,26 @@ const handleFullScreen = () => {
   }
   escChangeScreenBtn();
 };
+// ESC 키를 눌렀을 때 Enter Full Screen으로 변경
+const escChangeScreenBtn = document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      document.exitFullscreen();
+      fullScreenBtn.innerText = "Enter Full Screen";
+    }
+  });
+
+const handleMouseMove = () => {
+    if(controlsTimeout){
+        clearTimeout(controlsTimeout);
+        controlsTimeout = null;
+    }
+    videoControls.classList.add("showing");
+}
+const handleMouseLeave =() =>{
+    controlsTimeout = setTimeout(()=>{
+        videoControls.classList.remove("showing");
+    },2000)
+}
 
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
@@ -87,10 +110,5 @@ timeline.addEventListener("input", handleTimeLineChange);
 
 fullScreenBtn.addEventListener("click", handleFullScreen);
 
-// ESC 키를 눌렀을 때 Enter Full Screen으로 변경
-const escChangeScreenBtn = document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    document.exitFullscreen();
-    fullScreenBtn.innerText = "Enter Full Screen";
-  }
-});
+video.addEventListener("mousemove", handleMouseMove);
+video.addEventListener("mouseleave", handleMouseLeave);
