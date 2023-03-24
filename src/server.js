@@ -46,6 +46,11 @@ app.use(localMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/assets", express.static("assets"));
 app.use("/", rootRouter);
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+});
 app.use("/videos", videoRouter);
 app.use("/users", userRouter);
 app.use("/api", apiRouter);

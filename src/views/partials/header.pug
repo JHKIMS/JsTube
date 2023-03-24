@@ -23,6 +23,9 @@ header
                   if !loggedInUser.avatarUrl
                     span 🐳None
                   else
-                    img.header__avatar(src=loggedInUser.avatarUrl)
+                    img.header__avatar(src=loggedInUser.avatarUrl,crossorigin)
           li
             a(href="/search") Search
+
+
+            
