@@ -110,12 +110,13 @@ export const search = async (req, res) => {
 };
 
 export const registerView = async(req, res) => {
+  console.log("💣2");
   const {id} = req.params;
   const video = await Video.findById(id);
   if(!video){
-    return res.status(404)
+    return res.sendStatus(404);
   }
   video.meta.views = video.meta.views + 1;
   await video.save();
-  return res.status(200);
+  return res.sendStatus(200);
 }

@@ -105,7 +105,8 @@ const handleMouseLeave =() =>{
     controlsTimeout = setTimeout(hideControls,2000)
 }
 const handleEnded = () =>{
-  const {id} = videoContainer.dataset;
+  const id = videoContainer.dataset.id;
+  console.log("💣");
   fetch(`/api/videos/${id}/view`,{
     method: "POST",
   });
