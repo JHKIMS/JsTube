@@ -12,11 +12,12 @@ const handleSubmit = (event) =>{
     }
     fetch(`/api/videos/${videoId}/comment`,{
         method: "POST",
-        header: {
+        headers: {
             "Content-Type": "application/json",
         },
         body:JSON.stringify({text}),
     })
+    textarea.value="";
 }
 
 if(form){
