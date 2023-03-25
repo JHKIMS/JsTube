@@ -35,7 +35,7 @@ app.use(
 
 app.use((req, res, next) => {
   req.sessionStore.all((eroor, sessions) => {
-    console.log(sessions);
+    // console.log(sessions);
     next();
   });
 });

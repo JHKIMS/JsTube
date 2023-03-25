@@ -106,7 +106,6 @@ const handleMouseLeave =() =>{
 }
 const handleEnded = () =>{
   const id = videoContainer.dataset.id;
-  console.log("💣");
   fetch(`/api/videos/${id}/view`,{
     method: "POST",
   });

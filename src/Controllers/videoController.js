@@ -8,7 +8,8 @@ export const home = async (req, res) => {
 };
 export const watch = async (req, res) => {
   const id = req.params.id; // Es6 const{ id } = req.params;
-  const video = await Video.findById(id).populate("owner");
+  const video = await Video.findById(id).populate("owner").populate("comments");
+  console.log(video);
   if (!video) {
     // 에러에 걸리는 부분을 if로 처리
     return res.status(404).render("404", { pageTitle: "Video not found" });
@@ -139,5 +140,7 @@ export const createComment = async (req,res) =>{
     owner: user._id,
     video: id,
   });
+  video.comments.push(comment._id);
+  video.save();
   return res.sendStatus(201);
 }
