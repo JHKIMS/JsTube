@@ -7,6 +7,7 @@ import videoRouter from "./routers/videoRouter";
 import session from "express-session";
 import { localMiddleware } from "./middleware";
 import apiRouter from "./routers/apiRouter";
+import flash from "express-flash";
 
 const app = express();
 const morganMiddleware = morgan("dev");
@@ -42,6 +43,7 @@ app.get("/add-one", (req, res, next) => {
   req.session.potato += 1;
   return res.send(`${req.session.id}`);
 });
+app.use(flash());
 app.use(localMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/assets", express.static("assets"));
